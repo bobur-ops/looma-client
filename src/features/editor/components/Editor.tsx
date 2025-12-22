@@ -5,6 +5,7 @@ import {
   keymap,
   lineNumbers,
   highlightActiveLine,
+  placeholder as cmPlaceholder,
 } from "@codemirror/view";
 import {
   defaultKeymap,
@@ -43,6 +44,7 @@ export default function Editor({
       keymap.of([indentWithTab, ...defaultKeymap, ...historyKeymap]),
       markdown({ codeLanguages: languages }),
       editorHighlightStyle,
+      cmPlaceholder(placeholder || "Start writing..."),
       EditorView.lineWrapping,
       EditorView.editable.of(!readOnly),
       EditorView.contentAttributes.of({
