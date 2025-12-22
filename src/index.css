@@ -205,3 +205,33 @@
     letter-spacing: var(--tracking-normal);
   }
 }
+
+.no-scrollbar {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+
+  overflow: auto; /* ensures content is still scrollable */
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 10px;
+}
+
+::-webkit-scrollbar:horizontal {
+  height: 6px; /* controls thickness */
+}
+
+::-webkit-scrollbar-track {
+  background: oklch(0.3095 0.0266 266.7132);
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: oklch(39.455% 0.03973 265.616);
+  border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+  cursor: pointer;
+}
