@@ -6,7 +6,7 @@ export const theme = {
   },
   ".cm-content": {
     fontFamily: "JetBrains Mono, ui-monospace",
-    padding: "12px",
+    padding: "0 12px",
     minHeight: "100%",
     caretColor: "inherit",
   },
