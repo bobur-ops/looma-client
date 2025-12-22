@@ -13,16 +13,16 @@ export function ThemeToggle() {
   const renderTheme = useMemo(() => {
     if (theme === "light") {
       return (
-        <Button size={"icon"} onClick={toggleTheme}>
-          <MoonIcon className="size-5" />
+        <Button size={"icon-lg"} onClick={toggleTheme} variant={"ghost"}>
+          <MoonIcon className="size-6" />
         </Button>
       );
     }
 
     if (theme === "dark") {
       return (
-        <Button size={"icon"} onClick={toggleTheme}>
-          <SunIcon className="size-5" />
+        <Button size={"icon-lg"} onClick={toggleTheme} variant={"ghost"}>
+          <SunIcon className="size-6" />
         </Button>
       );
     }
