@@ -15,11 +15,14 @@ export const theme = {
     border: "none",
   },
   ".cm-lineNumbers .cm-gutterElement": {
-    textAlign: "right",
     padding: "0 8px 0 12px",
     opacity: "1",
     color: "var(--muted-foreground)",
     fontFamily: "JetBrains Mono, ui-monospace",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "flex-end",
+    minWidth: "3ch",
   },
   ".cm-content[data-placeholder]:empty:before": {
     content: "attr(data-placeholder)",

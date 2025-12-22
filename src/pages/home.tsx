@@ -2,7 +2,9 @@ import Editor from "@/features/editor/components/Editor";
 import { useState } from "react";
 
 export default function HomePage() {
-  const [md, setMd] = useState("## Hello\n\nType **markdown** here.\n");
+  const [md, setMd] = useState(
+    "# Hello\n## Hello\n### Hello\n\nType **markdown** here.\n"
+  );
 
   return (
     <div className="font-mono h-dvh grid grid-cols-12">
