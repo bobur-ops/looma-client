@@ -14,7 +14,7 @@ export default function HomePage() {
       </div>
       <div className="col-span-6 max-h-dvh overflow-y-auto">
         <div className="border-l h-full">
-          <Editor value={md} onChange={setMd} className="shadow-sm" />
+          <Editor value={md} onChange={setMd} />
         </div>
       </div>
     </div>
