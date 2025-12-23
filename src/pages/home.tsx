@@ -5,13 +5,14 @@ import {
   ResizablePanelGroup,
 } from "@/components/ui/resizable";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import Editor from "@/features/editor/components/Editor";
 import { Sidebar } from "@/widgets/sidebar";
 
 export default function HomePage() {
   return (
     <AppShell>
       <ResizablePanelGroup direction="horizontal">
-        <ResizablePanel defaultSize={5} maxSize={20} minSize={7}>
+        <ResizablePanel defaultSize={10} maxSize={20} minSize={10}>
           <ScrollArea className="h-full">
             <Sidebar />
           </ScrollArea>
@@ -42,12 +43,31 @@ export default function HomePage() {
 
             <ResizablePanel defaultSize={85} collapsible={false}>
               <ScrollArea className="h-full">
-                <main className="p-2 ">
-                  <h1 className="text-2xl font-bold mb-4">Editor</h1>
-                  <p>
-                    This is the big important panel where actual work allegedly
-                    happens.
-                  </p>
+                <main>
+                  <Editor
+                    value={`## 💼 Work Experience
+
+### **Smart-Base** (Nov 2023 – Present)
+
+**Frontend Developer** - Full-Time
+
+Key contributions and responsibilities:
+
+- Designed and evolved scalable frontend architecture for enterprise systems
+- Refactored and optimized large legacy codebases to improve maintainability, performance, and stability
+- Built modular, reusable components and internal UI patterns used across multiple applications
+- Implemented complex user interfaces including analytical dashboards, data visualizations, and interactive maps
+- Optimized rendering and data flow for applications working with large datasets and real-time updates
+- Integrated frontend applications with internal APIs and real-time services
+- Developed complex forms, filters, and validation logic for data-intensive workflows
+- Participated in code reviews, mentored junior developers, and contributed to frontend development standards
+- Collaborated closely with backend engineers, designers, and product managers on architectural and product decisions
+
+**Technologies:<br />**
+React, Typescript, Vite, Redux Toolkit, Zustand, TansStack Query, React Hook Form, Zod, Leaflet, data visualization libraries, WebSockets, TailwindCSS, SCSS, Git, CI/CD
+
+---`}
+                  />
                 </main>
               </ScrollArea>
             </ResizablePanel>

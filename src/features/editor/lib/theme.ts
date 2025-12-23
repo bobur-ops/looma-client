@@ -30,7 +30,7 @@ export const theme = {
     pointerEvents: "none",
   },
   ".cm-activeLine": {
-    backgroundColor: "oklch(0.3095 0.0266 266.7132)",
+    backgroundColor: "var(--muted)",
   },
   ".cm-line": {
     padding: "0",
