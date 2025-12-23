@@ -57,4 +57,10 @@ export const oneDarkHighlightStyle = HighlightStyle.define([
   { tag: [t.atom, t.bool, t.special(t.variableName)], color: whiskey },
   { tag: [t.processingInstruction, t.string, t.inserted], color: sage },
   { tag: t.invalid, color: invalid },
+
+  {
+    tag: t.monospace,
+    color: coral,
+    fontWeight: "semibold",
+  },
 ]);

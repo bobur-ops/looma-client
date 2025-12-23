@@ -3,6 +3,7 @@ export const theme = {
     fontSize: "16px",
     caretColor: "#e5e7eb",
     fontFamily: "JetBrains Mono, ui-monospace",
+    fontWeight: "400",
   },
   ".cm-content": {
     fontFamily: "JetBrains Mono, ui-monospace",
