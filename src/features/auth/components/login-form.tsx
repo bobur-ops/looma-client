@@ -9,16 +9,36 @@ import {
   FieldSeparator,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { loginSchema, type LoginFormValues } from "../schemas/auth";
+import { useLoginMutation } from "../api/mutations";
 
 export function LoginForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
+  const form = useForm<LoginFormValues>({
+    resolver: zodResolver(loginSchema),
+    defaultValues: {
+      email: "test@example.com",
+      password: "test",
+    },
+  });
+
+  const loginMutation = useLoginMutation();
+
+  function onSubmit(data: LoginFormValues) {
+    loginMutation.mutate(data);
+  }
+
+  const isSubmitting = form.formState.isSubmitting || loginMutation.isPending;
+
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card className="overflow-hidden p-0">
         <CardContent className="grid p-0 md:grid-cols-2">
-          <form className="p-6 md:p-8">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="p-6 md:p-8">
             <FieldGroup>
               <div className="flex flex-col items-center gap-2 text-center">
                 <h1 className="text-2xl font-bold">Welcome back</h1>
@@ -32,8 +52,13 @@ export function LoginForm({
                   id="email"
                   type="email"
                   placeholder="m@example.com"
-                  required
+                  {...form.register("email")}
                 />
+                {form.formState.errors.email && (
+                  <p className="text-destructive text-sm">
+                    {form.formState.errors.email.message}
+                  </p>
+                )}
               </Field>
               <Field>
                 <div className="flex items-center">
@@ -45,10 +70,21 @@ export function LoginForm({
                     Forgot your password?
                   </a>
                 </div>
-                <Input id="password" type="password" required />
+                <Input
+                  id="password"
+                  type="password"
+                  {...form.register("password")}
+                />
+                {form.formState.errors.password && (
+                  <p className="text-destructive text-sm">
+                    {form.formState.errors.password.message}
+                  </p>
+                )}
               </Field>
               <Field>
-                <Button type="submit">Login</Button>
+                <Button type="submit" disabled={isSubmitting}>
+                  {isSubmitting ? "Logging in..." : "Continue to Looma"}
+                </Button>
               </Field>
               <FieldSeparator className="*:data-[slot=field-separator-content]:bg-card">
                 Or continue with
