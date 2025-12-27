@@ -17,7 +17,7 @@ export const EditableTitle = () => {
   return (
     <div>
       <input
-        className="focus-visible:ring-0 min-w-[500px] text-2xl"
+        className="focus-visible:ring-0 min-w-[500px] w-full text-2xl"
         placeholder="Edit title"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
