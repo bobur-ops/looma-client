@@ -2,7 +2,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { useGetNotesQuery } from "../api/queries";
 import { useMemo } from "react";
 import { Spinner } from "@/components/ui/spinner";
-import { NoteListItem, NoteListItemSkeleton } from "./NoteListItem";
+import { NoteListItem, NoteListItemSkeleton } from "./note-list-item";
 import Empty from "@/components/ui/empty";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import { selectEditingNoteId, setEditingNoteId } from "../model/slice";
@@ -10,8 +10,8 @@ import { selectEditingNoteId, setEditingNoteId } from "../model/slice";
 export const NoteList = () => {
   const { data, isFetching, isLoading } = useGetNotesQuery();
   const dispatch = useAppDispatch();
-  const editingNoteId = useAppSelector(selectEditingNoteId)
-  
+  const editingNoteId = useAppSelector(selectEditingNoteId);
+
   const notes = useMemo(() => {
     const list = data?.data || [];
 

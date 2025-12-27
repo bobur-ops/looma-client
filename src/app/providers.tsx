@@ -7,6 +7,7 @@ import { Provider } from "react-redux";
 import { Toaster } from "react-hot-toast";
 import { persistQueryClient } from "@tanstack/query-persist-client-core";
 import { indexedDbPersister } from "@/lib/query-persister";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -36,6 +37,7 @@ export default function Providers({ children }: PropsWithChildren) {
   return (
     <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
       <QueryClientProvider client={queryClient}>
+        <ReactQueryDevtools initialIsOpen={false} />
         <Provider store={store}>
           <PersistGate persistor={persistor} loading={null}>
             <Toaster />

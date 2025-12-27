@@ -21,7 +21,11 @@ export const NoteListItem = ({ data, onSelect, isActive }: Props) => {
         "data-[active=true]:bg-accent"
       )}
     >
-      <span className={cn({ "text-muted-foreground": !data.title })}>
+      <span
+        className={cn("truncate w-full whitespace-nowrap", {
+          "text-muted-foreground": !data.title,
+        })}
+      >
         {data.title || "No title"}
       </span>
     </div>

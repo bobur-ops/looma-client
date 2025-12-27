@@ -5,6 +5,7 @@ export interface NoteListItemInterface {
   version: number;
   createdAt: string;
   updatedAt: string;
+  deletedAt: string | null;
 }
 
 export interface NoteDetailsInterface extends NoteListItemInterface {

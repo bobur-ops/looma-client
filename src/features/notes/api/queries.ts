@@ -1,9 +1,17 @@
 import { useQuery } from "@tanstack/react-query";
 import { getNoteByIdApi, listNotesApi } from "./api";
 
+export const notesKeys = {
+  all: ["notes"] as const,
+  lists: () => [...notesKeys.all, "list"] as const,
+  list: (params?: { limit?: number; offset?: number }) =>
+    [...notesKeys.all, "list", params] as const,
+  byId: (id: string) => [...notesKeys.all, "by-id", id] as const,
+};
+
 export const useGetNotesQuery = () => {
   return useQuery({
-    queryKey: ["notes"],
+    queryKey: notesKeys.list({ limit: 20, offset: 0 }),
     meta: { persist: true },
     queryFn: () =>
       listNotesApi({
@@ -13,11 +21,12 @@ export const useGetNotesQuery = () => {
   });
 };
 
-export const useGetNoteByIdQuery = (id: string) => {
+export const useGetNoteByIdQuery = (id: string | null) => {
   return useQuery({
-    queryKey: ["notes", "by-id", id],
+    queryKey: notesKeys.byId(id!),
     meta: { persist: true },
-    queryFn: () => getNoteByIdApi({ id }),
+    queryFn: () => getNoteByIdApi({ id: id! }),
     enabled: !!id,
+    select: (data) => data.data,
   });
 };

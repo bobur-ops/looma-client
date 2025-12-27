@@ -18,7 +18,9 @@ export const useLoginMutation = () => {
       const toastId = toast.loading("Redirecting...");
       dispatch(setAuthenticated(true));
       setTimeout(() => {
-        navigate("/");
+        navigate("/", {
+          replace: true,
+        });
         toast.dismiss(toastId);
       }, 500);
     },
