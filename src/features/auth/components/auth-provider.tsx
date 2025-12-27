@@ -6,7 +6,7 @@ import { useEffect } from "react";
 
 export default function AuthProvider() {
   const isAuthenticated = useAppSelector(selectIsAuthenticated);
-  const { isError } = useGetMeQuery({
+  const { isError, data } = useGetMeQuery({
     enabled: !!isAuthenticated,
   });
   const dispatch = useAppDispatch();
@@ -21,6 +21,10 @@ export default function AuthProvider() {
 
   if (!isAuthenticated) {
     return <Navigate to={"/auth/login"} />;
+  }
+
+  if (!data) {
+    return null;
   }
 
   return (

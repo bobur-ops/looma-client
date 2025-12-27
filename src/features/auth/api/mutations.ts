@@ -14,10 +14,12 @@ export const useLoginMutation = () => {
   return useMutation({
     mutationFn: loginApi,
     onSuccess: () => {
-      toast.success("Successfully logged in. Redirecting...");
+      toast.success("Successfully logged in!");
+      const toastId = toast.loading("Redirecting...");
       dispatch(setAuthenticated(true));
       setTimeout(() => {
         navigate("/");
+        toast.dismiss(toastId);
       }, 500);
     },
     onError: (error: AxiosError<ApiErrorResponse>) => {

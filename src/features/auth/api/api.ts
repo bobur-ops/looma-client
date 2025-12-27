@@ -1,4 +1,5 @@
 import { apiClient } from "@/config/axios";
+import type { GetMeApiResponse } from "../types";
 
 type LoginBodyInterface = {
   email: string;
@@ -19,10 +20,6 @@ export const loginApi = async (
   const response = await apiClient.post("/auth/login", body);
 
   return response.data;
-};
-
-type GetMeApiResponse = {
-  user_id: string;
 };
 
 export const getMeApi = async () => {

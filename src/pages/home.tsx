@@ -6,6 +6,7 @@ import {
 } from "@/components/ui/resizable";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import Editor from "@/features/editor/components/Editor";
+import { NoteList } from "@/features/notes/components/NoteList";
 import { Sidebar } from "@/widgets/sidebar";
 
 export default function HomePage() {
@@ -28,15 +29,7 @@ export default function HomePage() {
               minSize={10}
               collapsible={false}
             >
-              <ScrollArea className="h-full">
-                <section className="space-y-2 p-2">
-                  {Array.from({ length: 50 }).map((_, i) => (
-                    <div key={i} className="">
-                      Note {i + 1}
-                    </div>
-                  ))}
-                </section>
-              </ScrollArea>
+              <NoteList />
             </ResizablePanel>
 
             <ResizableHandle />
