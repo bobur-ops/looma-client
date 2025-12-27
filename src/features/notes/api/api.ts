@@ -2,6 +2,7 @@ import { apiClient } from "@/config/axios";
 import type { ApiResponse } from "@/shared/types/http";
 import type { NoteDetailsInterface, NoteListItemInterface } from "../types";
 import { cleanParams } from "@/lib/clean-params";
+import { sleep } from "@/lib/utils";
 
 type ListNotesApiParams = {
   limit: number;
@@ -42,6 +43,7 @@ export type PatchNoteInput = {
 export type PatchNoteByIdApiResponse = ApiResponse<NoteDetailsInterface>;
 
 export const patchNoteByIdApi = async (input: PatchNoteInput) => {
+  await sleep(3000);
   const { noteId, ...body } = input;
   const response = await apiClient.patch<PatchNoteByIdApiResponse>(
     `notes/${noteId}`,

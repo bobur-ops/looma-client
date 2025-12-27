@@ -5,6 +5,9 @@ import {
   type ListNotesApiResponse,
 } from "./api";
 import { notesKeys } from "./queries";
+import { produce, type Draft } from "immer";
+import type { NoteListItemInterface } from "../types";
+import { findLastPinnedIndex } from "@/lib/utils";
 
 export const usePatchNote = () => {
   const queryClient = useQueryClient();
@@ -26,27 +29,34 @@ export const usePatchNote = () => {
 
       queryClient.setQueryData(
         notesKeys.byId(input.noteId),
-        (old: GetNoteByIdApiResponse) => {
-          if (!old) return old;
-
-          return {
-            ...old,
-            data: { ...old.data, ...input, version: old.data.version + 1 },
-          };
-        }
+        (old: GetNoteByIdApiResponse) =>
+          produce(old, (draft) => {
+            if (!draft) return;
+            Object.assign(draft.data, input);
+            draft.data.version += 1;
+          })
       );
+
+      // queryClient.setQueryData(
+      //   notesKeys.byId(input.noteId),
+      //   (old: GetNoteByIdApiResponse) => {
+      //     if (!old) return old;
+
+      //     return {
+      //       ...old,
+      //       data: { ...old.data, ...input, version: old.data.version + 1 },
+      //     };
+      //   }
+      // );
 
       queryClient.setQueriesData(
         { queryKey: notesKeys.lists() },
-        (old: ListNotesApiResponse) => {
-          if (!old.data) return old;
-          return {
-            ...old,
-            data: old.data.map((note) =>
-              note.id === input.noteId ? { ...note, ...input } : note
-            ),
-          };
-        }
+        (old: ListNotesApiResponse) =>
+          produce(old, (draft) => {
+            if (!draft?.data) return;
+            const note = draft.data.find((n) => n.id === input.noteId);
+            if (note) Object.assign(note, input);
+          })
       );
 
       return { previousNote, previousLists };
@@ -83,27 +93,31 @@ export const usePatchNote = () => {
 
       queryClient.setQueriesData(
         { queryKey: notesKeys.lists() },
-        (old: ListNotesApiResponse) => {
-          if (!old?.data) return old;
-
-          const rest = old.data.filter((note) => note.id !== updatedNote.id);
-
-          const pinned = rest.filter((note) => note.isPinned);
-          const unpinned = rest.filter((note) => !note.isPinned);
-
-          if (updatedNote.isPinned) {
-            return {
-              ...old,
-              data: [updatedNote, ...pinned, ...unpinned],
-            };
-          }
-
-          return {
-            ...old,
-            data: [...pinned, updatedNote, ...unpinned],
-          };
-        }
+        (old: ListNotesApiResponse) =>
+          produce(old, (draft) => {
+            upsertAndReorder(draft, updatedNote);
+          })
       );
     },
   });
 };
+
+function upsertAndReorder(
+  draft: Draft<ListNotesApiResponse>,
+  updatedNote: NoteListItemInterface
+) {
+  if (!draft.data) return;
+
+  const index = draft.data.findIndex((n) => n.id === updatedNote.id);
+
+  if (index !== -1) {
+    draft.data.splice(index, 1);
+  }
+
+  if (updatedNote.isPinned) {
+    draft.data.unshift(updatedNote);
+  } else {
+    const lastPinnedIndex = findLastPinnedIndex(draft.data);
+    draft.data.splice(lastPinnedIndex + 1, 0, updatedNote);
+  }
+}
