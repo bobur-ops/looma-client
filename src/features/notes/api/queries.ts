@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { listNotesApi } from "./api";
+import { getNoteByIdApi, listNotesApi } from "./api";
 
 export const useGetNotesQuery = () => {
   return useQuery({
@@ -10,5 +10,14 @@ export const useGetNotesQuery = () => {
         limit: 20,
         offset: 0,
       }),
+  });
+};
+
+export const useGetNoteByIdQuery = (id: string) => {
+  return useQuery({
+    queryKey: ["notes", "by-id", id],
+    meta: { persist: true },
+    queryFn: () => getNoteByIdApi({ id }),
+    enabled: !!id,
   });
 };

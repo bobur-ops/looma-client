@@ -6,3 +6,7 @@ export interface NoteListItemInterface {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface NoteDetailsInterface extends NoteListItemInterface {
+  body: string;
+}

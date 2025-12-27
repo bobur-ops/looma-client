@@ -4,10 +4,14 @@ import { useMemo } from "react";
 import { Spinner } from "@/components/ui/spinner";
 import { NoteListItem, NoteListItemSkeleton } from "./NoteListItem";
 import Empty from "@/components/ui/empty";
+import { useAppDispatch, useAppSelector } from "@/hooks/redux";
+import { selectEditingNoteId, setEditingNoteId } from "../model/slice";
 
 export const NoteList = () => {
   const { data, isFetching, isLoading } = useGetNotesQuery();
-
+  const dispatch = useAppDispatch();
+  const editingNoteId = useAppSelector(selectEditingNoteId)
+  
   const notes = useMemo(() => {
     const list = data?.data || [];
 
@@ -24,8 +28,17 @@ export const NoteList = () => {
         </div>
       );
 
-    return list.map((note) => <NoteListItem key={note.id} data={note} />);
-  }, [data]);
+    return list.map((note) => (
+      <NoteListItem
+        key={note.id}
+        data={note}
+        onSelect={(id) => {
+          dispatch(setEditingNoteId(id));
+        }}
+        isActive={editingNoteId === note.id}
+      />
+    ));
+  }, [data, dispatch, isLoading, editingNoteId]);
 
   return (
     <div className="h-full relative pt-12">
@@ -50,7 +63,7 @@ const NoteListHeader = ({ isFetching }: NoteListHeaderProps) => {
         </div>
       );
 
-    return "Notes";
+    return "Your Notes";
   }, [isFetching]);
 
   return (

@@ -9,9 +9,11 @@ import {
   REGISTER,
   REHYDRATE,
 } from "redux-persist";
+import { notesSliceReducer } from "./features/notes/model/slice";
 
 const rootReducer = combineReducers({
   auth: authSliceReducer,
+  notes: notesSliceReducer,
 });
 
 export const store = configureStore({
