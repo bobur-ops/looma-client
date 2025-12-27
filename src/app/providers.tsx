@@ -6,7 +6,7 @@ import { PersistGate } from "redux-persist/integration/react";
 import { Provider } from "react-redux";
 import { Toaster } from "react-hot-toast";
 import { persistQueryClient } from "@tanstack/query-persist-client-core";
-import { indexedDbPersister } from "@/lib/queryPersister";
+import { indexedDbPersister } from "@/lib/query-persister";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -14,7 +14,7 @@ const queryClient = new QueryClient({
       staleTime: 1000 * 60 * 5, // 5 minutes,
       gcTime: 1000 * 60 * 60 * 24, // 24 hours,
       refetchOnMount: "always",
-      refetchOnWindowFocus: true,
+      refetchOnWindowFocus: false,
       retry: 1,
     },
   },
@@ -26,7 +26,7 @@ persistQueryClient({
   maxAge: 1000 * 60 * 60 * 24 * 7, // 7 days
   dehydrateOptions: {
     shouldDehydrateQuery: (query) => {
-      return query.meta?.persist !== false;
+      return query.meta?.persist === true;
     },
   },
   buster: "v1",

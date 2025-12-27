@@ -7,6 +7,7 @@ export const useGetMeQuery = (options?: QueryCustomOptions) => {
     queryKey: ["me"],
     queryFn: getMeApi,
     retry: false,
+    meta: { persist: true },
     ...options,
   });
 };

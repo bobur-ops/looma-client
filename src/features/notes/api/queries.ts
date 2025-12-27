@@ -4,6 +4,7 @@ import { listNotesApi } from "./api";
 export const useGetNotesQuery = () => {
   return useQuery({
     queryKey: ["notes"],
+    meta: { persist: true },
     queryFn: () =>
       listNotesApi({
         limit: 20,
