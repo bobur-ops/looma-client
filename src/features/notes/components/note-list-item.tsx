@@ -29,7 +29,7 @@ export const NoteListItem = ({
       onClick={() => onSelect(data.id)}
       tabIndex={0}
       className={cn(
-        "select-none bg-background border-b flex items-center px-2 h-10",
+        "select-none bg-background border-b flex items-center px-2 py-2",
         "hover:brightness-110",
         {
           "bg-muted": data.isPinned,
@@ -38,7 +38,7 @@ export const NoteListItem = ({
       )}
     >
       <span
-        className={cn("truncate w-full whitespace-nowrap", {
+        className={cn("w-full line-clamp-2 flex-1", {
           "text-muted-foreground": !data.title,
         })}
       >
@@ -59,12 +59,12 @@ export const NoteListItem = ({
         <DropdownMenuContent>
           <DropdownMenuItem
             onClick={() => {
-              onPatchPinned(data.id, data.version, true);
+              onPatchPinned(data.id, data.version, !data.isPinned);
             }}
           >
-            Pin
+            {data.isPinned ? "Unpin" : "Pin"}
           </DropdownMenuItem>
-          <DropdownMenuItem>Delete</DropdownMenuItem>
+          <DropdownMenuItem variant="destructive">Delete</DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
     </div>
@@ -73,8 +73,8 @@ export const NoteListItem = ({
 
 export const NoteListItemSkeleton = () => {
   return (
-    <div className="h-10 flex justify-center items-center p-2 border-b">
-      <Skeleton className="h-3 w-full" />
+    <div className="flex justify-center items-center p-2 py-4 border-b">
+      <Skeleton className="h-4 w-full" />
     </div>
   );
 };

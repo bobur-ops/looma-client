@@ -26,7 +26,7 @@ export default function HomePage() {
             <ResizablePanel
               defaultSize={15}
               maxSize={40}
-              minSize={10}
+              minSize={15}
               collapsible={false}
             >
               <NoteList />
