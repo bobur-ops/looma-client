@@ -17,9 +17,14 @@ export const usePatchNote = () => {
         queryKey: notesKeys.byId(input.noteId),
       });
 
-      const previousNote = queryClient.getQueryData(
+      const previousNote = queryClient.getQueryData<GetNoteByIdApiResponse>(
         notesKeys.byId(input.noteId)
       );
+      const previousLists = queryClient.getQueriesData<ListNotesApiResponse>({
+        queryKey: notesKeys.lists(),
+      });
+
+      console.log("Previous Lists:", previousLists);
 
       queryClient.setQueryData(
         notesKeys.byId(input.noteId),
@@ -46,11 +51,20 @@ export const usePatchNote = () => {
         }
       );
 
-      return { previousNote };
+      return { previousNote, previousLists };
     },
 
-    onError: (error, variables, onMutateResult, context) => {
-      console.log("error", error, variables, context);
+    onError: (_error, input, context) => {
+      if (context?.previousNote) {
+        queryClient.setQueryData(
+          notesKeys.byId(input.noteId),
+          context.previousNote
+        );
+      }
+
+      context?.previousLists?.forEach(([queryKey, data]) => {
+        queryClient.setQueryData(queryKey, data);
+      });
     },
 
     onSuccess: (response, input) => {
