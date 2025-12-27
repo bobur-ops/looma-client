@@ -77,17 +77,30 @@ export const usePatchNote = () => {
     },
 
     onSuccess: (response, input) => {
+      const updatedNote = response.data;
+
       queryClient.setQueryData(notesKeys.byId(input.noteId), response);
 
       queryClient.setQueriesData(
         { queryKey: notesKeys.lists() },
         (old: ListNotesApiResponse) => {
-          if (!old.data) return old;
+          if (!old?.data) return old;
+
+          const rest = old.data.filter((note) => note.id !== updatedNote.id);
+
+          const pinned = rest.filter((note) => note.isPinned);
+          const unpinned = rest.filter((note) => !note.isPinned);
+
+          if (updatedNote.isPinned) {
+            return {
+              ...old,
+              data: [updatedNote, ...pinned, ...unpinned],
+            };
+          }
+
           return {
             ...old,
-            data: old.data.map((note) =>
-              note.id === input.noteId ? { ...note, ...input } : note
-            ),
+            data: [...pinned, updatedNote, ...unpinned],
           };
         }
       );

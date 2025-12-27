@@ -1,11 +1,9 @@
-// import { useQueryClient } from "@tanstack/react-query";
 import { useGetEditingNote } from "../model/useGetEditingNote";
 import { usePatchNote } from "@/features/notes/api/mutations";
 import { useEffect, useState } from "react";
 
 export const EditableTitle = () => {
   const { data: note } = useGetEditingNote();
-  // const queryClient = useQueryClient();
   const patchNote = usePatchNote();
   const [title, setTitle] = useState("");
 

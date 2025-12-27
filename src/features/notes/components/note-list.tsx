@@ -1,16 +1,30 @@
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useGetNotesQuery } from "../api/queries";
-import { useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import { Spinner } from "@/components/ui/spinner";
 import { NoteListItem, NoteListItemSkeleton } from "./note-list-item";
 import Empty from "@/components/ui/empty";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import { selectEditingNoteId, setEditingNoteId } from "../model/slice";
+import { usePatchNote } from "../api/mutations";
 
 export const NoteList = () => {
   const { data, isFetching, isLoading } = useGetNotesQuery();
   const dispatch = useAppDispatch();
   const editingNoteId = useAppSelector(selectEditingNoteId);
+
+  const patchNote = usePatchNote();
+
+  const handlePatchPinned = useCallback(
+    (noteId: string, version: number, isPinned: boolean) => {
+      patchNote.mutate({
+        noteId: noteId,
+        version: version,
+        isPinned: isPinned,
+      });
+    },
+    [patchNote]
+  );
 
   const notes = useMemo(() => {
     const list = data?.data || [];
@@ -36,9 +50,10 @@ export const NoteList = () => {
           dispatch(setEditingNoteId(id));
         }}
         isActive={editingNoteId === note.id}
+        onPatchPinned={handlePatchPinned}
       />
     ));
-  }, [data, dispatch, isLoading, editingNoteId]);
+  }, [data, dispatch, isLoading, editingNoteId, handlePatchPinned]);
 
   return (
     <div className="h-full relative pt-12">

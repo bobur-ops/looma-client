@@ -201,7 +201,7 @@
     @apply border-border outline-ring/50;
   }
   *:focus-visible {
-    @apply outline-none ring-2 ring-ring;
+    @apply outline-none;
   }
   body {
     @apply bg-background text-foreground;
