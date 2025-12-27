@@ -11,8 +11,8 @@ import { indexedDbPersister } from "@/lib/queryPersister";
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: 1000 * 60 * 5,
-      gcTime: 1000 * 60 * 60 * 24,
+      staleTime: 1000 * 60 * 5, // 5 minutes,
+      gcTime: 1000 * 60 * 60 * 24, // 24 hours,
       refetchOnMount: "always",
       refetchOnWindowFocus: true,
       retry: 1,
@@ -23,7 +23,7 @@ const queryClient = new QueryClient({
 persistQueryClient({
   queryClient,
   persister: indexedDbPersister,
-  maxAge: 1000 * 60 * 60 * 24 * 7, // 24 hours
+  maxAge: 1000 * 60 * 60 * 24 * 7, // 7 days
   dehydrateOptions: {
     shouldDehydrateQuery: (query) => {
       return query.meta?.persist !== false;
