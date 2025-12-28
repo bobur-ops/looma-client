@@ -56,3 +56,10 @@ export const deleteNoteByIdApi = async (noteId: string) => {
 
   return response.data;
 };
+
+type CreateNoteApiResponse = ApiResponse<NoteDetailsInterface>;
+
+export const createNoteApi = async () => {
+  const response = await apiClient.post<CreateNoteApiResponse>("notes");
+  return response.data;
+};
