@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import {
+  deleteNoteByIdApi,
   patchNoteByIdApi,
   type GetNoteByIdApiResponse,
   type ListNotesApiResponse,
@@ -8,6 +9,8 @@ import { notesKeys } from "./queries";
 import { produce, type Draft } from "immer";
 import type { NoteListItemInterface } from "../types";
 import { findLastPinnedIndex } from "@/lib/utils";
+import { useAppDispatch, useAppSelector } from "@/hooks/redux";
+import { selectEditingNoteId, setEditingNoteId } from "../model/slice";
 
 export const usePatchNote = () => {
   const queryClient = useQueryClient();
@@ -36,18 +39,6 @@ export const usePatchNote = () => {
             draft.data.version += 1;
           })
       );
-
-      // queryClient.setQueryData(
-      //   notesKeys.byId(input.noteId),
-      //   (old: GetNoteByIdApiResponse) => {
-      //     if (!old) return old;
-
-      //     return {
-      //       ...old,
-      //       data: { ...old.data, ...input, version: old.data.version + 1 },
-      //     };
-      //   }
-      // );
 
       queryClient.setQueriesData(
         { queryKey: notesKeys.lists() },
@@ -121,3 +112,45 @@ function upsertAndReorder(
     draft.data.splice(lastPinnedIndex + 1, 0, updatedNote);
   }
 }
+
+export const useDeleteNoteById = () => {
+  const queryClient = useQueryClient();
+  const editingNoteId = useAppSelector(selectEditingNoteId);
+  const dispatch = useAppDispatch();
+
+  return useMutation({
+    mutationFn: deleteNoteByIdApi,
+
+    onMutate: async (noteId) => {
+      await queryClient.cancelQueries({
+        queryKey: notesKeys.byId(noteId),
+      });
+
+      if (editingNoteId === noteId) {
+        dispatch(setEditingNoteId(null));
+      }
+
+      const previousList = queryClient.getQueriesData<ListNotesApiResponse>({
+        queryKey: notesKeys.lists(),
+      });
+
+      queryClient.setQueriesData(
+        { queryKey: notesKeys.lists() },
+        (old: ListNotesApiResponse) =>
+          produce(old, (draft) => {
+            if (!draft.data) return;
+
+            draft.data = draft.data.filter((note) => note.id !== noteId);
+          })
+      );
+
+      return { previousList };
+    },
+
+    onError: (_error, _noteId, context) => {
+      context?.previousList.forEach(([key, data]) => {
+        queryClient.setQueryData(key, data);
+      });
+    },
+  });
+};

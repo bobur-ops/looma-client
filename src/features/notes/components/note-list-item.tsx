@@ -1,20 +1,20 @@
 import { cn } from "@/lib/utils";
 import type { NoteListItemInterface } from "../types";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Button } from "@/components/ui/button";
-import { EllipsisVertical } from "lucide-react";
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+  ContextMenu,
+  ContextMenuContent,
+  ContextMenuItem,
+  ContextMenuTrigger,
+} from "@/components/ui/context-menu";
+import { Pin, Trash2 } from "lucide-react";
 
 type Props = {
   data: NoteListItemInterface;
   isActive: boolean;
   onSelect: (id: string) => void;
   onPatchPinned: (noteId: string, version: number, isPinned: boolean) => void;
+  onDelete: (noteId: string) => void;
 };
 
 export const NoteListItem = ({
@@ -22,52 +22,55 @@ export const NoteListItem = ({
   isActive,
   onSelect,
   onPatchPinned,
+  onDelete,
 }: Props) => {
   return (
-    <div
-      role="button"
-      onClick={() => onSelect(data.id)}
-      tabIndex={0}
-      className={cn(
-        "select-none bg-background border-b flex items-center px-2 py-2",
-        "hover:brightness-110",
-        {
-          "bg-muted": data.isPinned,
-          "bg-accent": isActive,
-        }
-      )}
-    >
-      <span
-        className={cn("w-full line-clamp-2 flex-1", {
-          "text-muted-foreground": !data.title,
-        })}
-      >
-        {data.title || "No title"}
-      </span>
-      <DropdownMenu>
-        <DropdownMenuTrigger>
-          <Button
-            size={"icon-sm"}
-            variant={"ghost"}
-            onClick={(e) => {
-              e.stopPropagation();
-            }}
+    <ContextMenu>
+      <ContextMenuTrigger>
+        <div
+          role="button"
+          onClick={() => onSelect(data.id)}
+          tabIndex={0}
+          className={cn(
+            "select-none bg-background border-b flex gap-2 px-2 py-2",
+            "hover:brightness-110",
+            {
+              "bg-muted": data.isPinned,
+              "bg-accent": isActive,
+            }
+          )}
+        >
+          <span
+            className={cn("w-full line-clamp-2 flex-1", {
+              "text-muted-foreground": !data.title,
+            })}
           >
-            <EllipsisVertical />
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent>
-          <DropdownMenuItem
-            onClick={() => {
-              onPatchPinned(data.id, data.version, !data.isPinned);
-            }}
-          >
-            {data.isPinned ? "Unpin" : "Pin"}
-          </DropdownMenuItem>
-          <DropdownMenuItem variant="destructive">Delete</DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
-    </div>
+            {data.title || "No title"}
+          </span>
+
+          {data.isPinned && (
+            <Pin className="text-muted-foreground size-4 rotate-45" />
+          )}
+        </div>
+      </ContextMenuTrigger>
+      <ContextMenuContent>
+        <ContextMenuItem
+          onClick={() => {
+            onPatchPinned(data.id, data.version, !data.isPinned);
+          }}
+        >
+          <Pin />
+          {data.isPinned ? "Unpin" : "Pin"}
+        </ContextMenuItem>
+        <ContextMenuItem
+          variant="destructive"
+          onClick={() => onDelete(data.id)}
+        >
+          <Trash2 />
+          Delete
+        </ContextMenuItem>
+      </ContextMenuContent>
+    </ContextMenu>
   );
 };
 

@@ -6,7 +6,7 @@ import { NoteListItem, NoteListItemSkeleton } from "./note-list-item";
 import Empty from "@/components/ui/empty";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import { selectEditingNoteId, setEditingNoteId } from "../model/slice";
-import { usePatchNote } from "../api/mutations";
+import { useDeleteNoteById, usePatchNote } from "../api/mutations";
 
 export const NoteList = () => {
   const { data, isFetching, isLoading } = useGetNotesQuery();
@@ -14,6 +14,7 @@ export const NoteList = () => {
   const editingNoteId = useAppSelector(selectEditingNoteId);
 
   const patchNote = usePatchNote();
+  const deleteNote = useDeleteNoteById();
 
   const handlePatchPinned = useCallback(
     (noteId: string, version: number, isPinned: boolean) => {
@@ -24,6 +25,13 @@ export const NoteList = () => {
       });
     },
     [patchNote]
+  );
+
+  const handleDeleteNotById = useCallback(
+    (noteId: string) => {
+      deleteNote.mutate(noteId);
+    },
+    [deleteNote]
   );
 
   const notes = useMemo(() => {
@@ -51,9 +59,17 @@ export const NoteList = () => {
         }}
         isActive={editingNoteId === note.id}
         onPatchPinned={handlePatchPinned}
+        onDelete={handleDeleteNotById}
       />
     ));
-  }, [data, dispatch, isLoading, editingNoteId, handlePatchPinned]);
+  }, [
+    data,
+    dispatch,
+    isLoading,
+    editingNoteId,
+    handlePatchPinned,
+    handleDeleteNotById,
+  ]);
 
   return (
     <div className="h-full relative pt-12">

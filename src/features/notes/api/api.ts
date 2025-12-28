@@ -50,3 +50,9 @@ export const patchNoteByIdApi = async (input: PatchNoteInput) => {
 
   return response.data;
 };
+
+export const deleteNoteByIdApi = async (noteId: string) => {
+  const response = await apiClient.delete<undefined>(`notes/${noteId}`);
+
+  return response.data;
+};
