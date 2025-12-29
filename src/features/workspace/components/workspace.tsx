@@ -3,7 +3,7 @@ import { useMemo } from "react";
 import { WorkspaceHeader } from "./workspace-header";
 import { WorkspaceEditor } from "./workspace-editor";
 import { useAppSelector } from "@/hooks/redux";
-import { selectEditingNoteId } from "@/features/notes/model/slice";
+import { selectEditingNoteId } from "@/features/notes/model/notes-slice";
 
 export default function Workspace() {
   const noteId = useAppSelector(selectEditingNoteId);

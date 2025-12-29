@@ -4,7 +4,7 @@ import type { AxiosError } from "axios";
 import type { ApiErrorResponse } from "@/shared/types/http";
 import toast from "react-hot-toast";
 import { useAppDispatch } from "@/hooks/redux";
-import { setAuthenticated } from "../model/slice";
+import { setAuthenticated } from "../model/auth-slice";
 import { useNavigate } from "react-router";
 
 export const useLoginMutation = () => {

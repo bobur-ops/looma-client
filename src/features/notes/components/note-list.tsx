@@ -5,7 +5,7 @@ import { Spinner } from "@/components/ui/spinner";
 import { NoteListItem, NoteListItemSkeleton } from "./note-list-item";
 import Empty from "@/components/ui/empty";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
-import { selectEditingNoteId, setEditingNoteId } from "../model/slice";
+import { selectEditingNoteId, setEditingNoteId } from "../model/notes-slice";
 import {
   useCreateNote,
   useDeleteNoteById,

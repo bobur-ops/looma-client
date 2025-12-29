@@ -1,5 +1,5 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
-import { authSliceReducer } from "./features/auth/model/slice";
+import { authSliceReducer } from "./features/auth/model/auth-slice";
 import {
   FLUSH,
   PAUSE,
@@ -9,11 +9,13 @@ import {
   REGISTER,
   REHYDRATE,
 } from "redux-persist";
-import { notesSliceReducer } from "./features/notes/model/slice";
+import { notesSliceReducer } from "./features/notes/model/notes-slice";
+import { workspaceSlice } from "./features/workspace/model/workspace-slice";
 
 const rootReducer = combineReducers({
   auth: authSliceReducer,
   notes: notesSliceReducer,
+  workspace: workspaceSlice.reducer,
 });
 
 export const store = configureStore({

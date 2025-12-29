@@ -11,7 +11,7 @@ import { produce, type Draft } from "immer";
 import type { NoteListItemInterface } from "../types";
 import { findLastPinnedIndex } from "@/lib/utils";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
-import { selectEditingNoteId, setEditingNoteId } from "../model/slice";
+import { selectEditingNoteId, setEditingNoteId } from "../model/notes-slice";
 
 export const usePatchNote = () => {
   const queryClient = useQueryClient();

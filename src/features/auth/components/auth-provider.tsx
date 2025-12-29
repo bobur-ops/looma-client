@@ -1,6 +1,6 @@
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import { Navigate, Outlet, useNavigate } from "react-router";
-import { selectIsAuthenticated, setAuthenticated } from "../model/slice";
+import { selectIsAuthenticated, setAuthenticated } from "../model/auth-slice";
 import { useGetMeQuery } from "../api/queries";
 import { useEffect } from "react";
 

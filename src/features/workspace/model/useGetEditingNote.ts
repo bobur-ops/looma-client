@@ -1,5 +1,5 @@
 import { useGetNoteByIdQuery } from "@/features/notes/api/queries";
-import { selectEditingNoteId } from "@/features/notes/model/slice";
+import { selectEditingNoteId } from "@/features/notes/model/notes-slice";
 import { useAppSelector } from "@/hooks/redux";
 
 export const useGetEditingNote = () => {

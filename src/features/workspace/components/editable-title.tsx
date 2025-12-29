@@ -1,11 +1,15 @@
 import { useGetEditingNote } from "../model/useGetEditingNote";
 import { usePatchNote } from "@/features/notes/api/mutations";
+import { useAppSelector } from "@/hooks/redux";
 import { useEffect, useState } from "react";
+import { selectIsNoteDirty } from "../model/workspace-slice";
+import { cn } from "@/lib/utils";
 
 export const EditableTitle = () => {
   const { data: note } = useGetEditingNote();
   const patchNote = usePatchNote();
   const [title, setTitle] = useState("");
+  const isDirty = useAppSelector(selectIsNoteDirty(note?.id ?? ""));
 
   useEffect(() => {
     if (note?.title !== undefined) {
@@ -15,9 +19,11 @@ export const EditableTitle = () => {
   }, [note?.title]);
 
   return (
-    <div>
+    <div className="flex items-center gap-2">
       <input
-        className="focus-visible:ring-0 min-w-[500px] w-full text-2xl"
+        className={cn("focus-visible:ring-0 min-w-[500px] w-full text-2xl", {
+          "italic text-primary": isDirty,
+        })}
         placeholder="Edit title"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
