@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import {
+  createNoteApi,
   deleteNoteByIdApi,
   patchNoteByIdApi,
   type GetNoteByIdApiResponse,
@@ -151,6 +152,97 @@ export const useDeleteNoteById = () => {
       context?.previousList.forEach(([key, data]) => {
         queryClient.setQueryData(key, data);
       });
+    },
+  });
+};
+
+export const useCreateNote = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: createNoteApi,
+
+    onMutate: async () => {
+      await queryClient.cancelQueries({
+        queryKey: notesKeys.all,
+      });
+
+      const tempId = `temp-${crypto.randomUUID()}`;
+
+      const previousLists = queryClient.getQueriesData<ListNotesApiResponse>({
+        queryKey: notesKeys.lists(),
+      });
+
+      const optimisticNote: NoteListItemInterface = {
+        id: tempId,
+        title: "",
+        isPinned: false,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        deletedAt: null,
+        version: 1,
+      };
+
+      queryClient.setQueriesData(
+        {
+          queryKey: notesKeys.lists(),
+        },
+        (old: ListNotesApiResponse) => {
+          return produce(old, (draft) => {
+            if (!draft.data) return;
+            draft.data.unshift(optimisticNote);
+          });
+        }
+      );
+
+      const optimisticDetails: GetNoteByIdApiResponse = {
+        code: 200,
+        message: "Success",
+        success: true,
+        time: new Date().toISOString(),
+        data: {
+          ...optimisticNote,
+          body: "",
+        },
+      };
+
+      queryClient.setQueryData(notesKeys.byId(tempId), optimisticDetails);
+
+      return { previousLists, tempId };
+    },
+    onError: (_error, _variables, context) => {
+      if (context?.previousLists) {
+        context.previousLists.forEach(([queryKey, data]) => {
+          if (data) queryClient.setQueryData(queryKey, data);
+        });
+      }
+
+      if (context?.tempId) {
+        queryClient.removeQueries({
+          queryKey: notesKeys.byId(context.tempId),
+        });
+      }
+    },
+    onSuccess: (response, _variables, context) => {
+      const realId = response.data.id;
+      const tempId = context.tempId;
+      queryClient.setQueryData(notesKeys.byId(realId), response);
+
+      if (tempId) {
+        queryClient.removeQueries({ queryKey: notesKeys.byId(tempId) });
+      }
+
+      queryClient.setQueriesData<ListNotesApiResponse>(
+        { queryKey: notesKeys.lists() },
+        (old) => {
+          return produce(old, (draft) => {
+            if (!draft?.data) return;
+
+            draft.data = draft.data.filter((note) => note.id !== tempId);
+            draft.data.unshift(response.data);
+          });
+        }
+      );
     },
   });
 };

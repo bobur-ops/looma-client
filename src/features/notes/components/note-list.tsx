@@ -6,7 +6,13 @@ import { NoteListItem, NoteListItemSkeleton } from "./note-list-item";
 import Empty from "@/components/ui/empty";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import { selectEditingNoteId, setEditingNoteId } from "../model/slice";
-import { useDeleteNoteById, usePatchNote } from "../api/mutations";
+import {
+  useCreateNote,
+  useDeleteNoteById,
+  usePatchNote,
+} from "../api/mutations";
+import { Button } from "@/components/ui/button";
+import { SquarePen } from "lucide-react";
 
 export const NoteList = () => {
   const { data, isFetching, isLoading } = useGetNotesQuery();
@@ -86,6 +92,9 @@ type NoteListHeaderProps = {
 };
 
 const NoteListHeader = ({ isFetching }: NoteListHeaderProps) => {
+  const createNote = useCreateNote();
+  const dispatch = useAppDispatch();
+
   const headerText = useMemo(() => {
     if (isFetching)
       return (
@@ -97,9 +106,33 @@ const NoteListHeader = ({ isFetching }: NoteListHeaderProps) => {
     return "Your Notes";
   }, [isFetching]);
 
+  const handleCreateNote = useCallback(() => {
+    createNote.mutate(undefined, {
+      onSuccess: (response) => {
+        console.log("Created note:", response);
+        dispatch(setEditingNoteId(response.data.id));
+      },
+    });
+  }, [createNote, dispatch]);
+
   return (
-    <div className="absolute left-0 top-0 right-0 border-b h-12 flex justify-center items-center">
-      <h2>{headerText}</h2>
+    <div className="absolute left-0 top-0 right-0">
+      <div className="h-12 flex justify-start px-2 items-center relative  border-b">
+        <Button
+          size={"icon"}
+          variant={"ghost"}
+          className="absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground"
+          onClick={handleCreateNote}
+          disabled={createNote.isPending}
+        >
+          {createNote.isPending ? (
+            <Spinner />
+          ) : (
+            <SquarePen className="size-5" />
+          )}
+        </Button>
+        <h2>{headerText}</h2>
+      </div>
     </div>
   );
 };
