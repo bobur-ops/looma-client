@@ -1,4 +1,4 @@
-import { useGetEditingNote } from "../model/useGetEditingNote";
+import { useGetEditingNote } from "../model/use-get-editing-note";
 import { usePatchNote } from "@/features/notes/api/mutations";
 import { useAppSelector } from "@/hooks/redux";
 import { useEffect, useState } from "react";

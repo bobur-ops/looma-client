@@ -1,11 +1,13 @@
-import Editor from "@/features/editor/components/Editor";
 import { usePatchNote } from "@/features/notes/api/mutations";
-import { useGetEditingNote } from "../model/useGetEditingNote";
+import { useGetEditingNote } from "../model/use-get-editing-note";
 import { useCallback } from "react";
-import { useAutoSaveEditor } from "../model/useAutoSaveEditor";
+import { useAutoSaveEditor } from "../model/use-auto-save-editor";
 import { Spinner } from "@/components/ui/spinner";
+import Editor from "@/features/editor/components/Editor";
+import { useWorkspaceEditor } from "../model/workspace-context";
 
 export const WorkspaceEditor = () => {
+  const { editorRef } = useWorkspaceEditor();
   const { mutate: patchNote, isPending } = usePatchNote();
   const { data: editingNote } = useGetEditingNote();
 
@@ -32,7 +34,7 @@ export const WorkspaceEditor = () => {
           <Spinner size={14} /> Saving...
         </div>
       )}
-      <Editor value={value} onChange={onChange} />
+      <Editor ref={editorRef} value={value} onChange={onChange} />
     </div>
   );
 };

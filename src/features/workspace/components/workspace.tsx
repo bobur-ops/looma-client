@@ -4,6 +4,7 @@ import { WorkspaceHeader } from "./workspace-header";
 import { WorkspaceEditor } from "./workspace-editor";
 import { useAppSelector } from "@/hooks/redux";
 import { selectEditingNoteId } from "@/features/notes/model/notes-slice";
+import { WorkspaceProvider } from "../model/workspace-context";
 
 export default function Workspace() {
   const noteId = useAppSelector(selectEditingNoteId);
@@ -14,12 +15,16 @@ export default function Workspace() {
     }
 
     return (
-      <ScrollArea className="h-full pt-12">
+      <ScrollArea className="h-full pt-[84px]">
         <WorkspaceHeader />
         <WorkspaceEditor />
       </ScrollArea>
     );
   }, [noteId]);
 
-  return <main className="h-full relative">{content}</main>;
+  return (
+    <WorkspaceProvider>
+      <main className="h-full relative">{content}</main>
+    </WorkspaceProvider>
+  );
 }
