@@ -4,7 +4,6 @@ import {
   ResizablePanel,
   ResizablePanelGroup,
 } from "@/components/ui/resizable";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { NoteList } from "@/features/notes/components/note-list";
 import Workspace from "@/features/workspace/components/workspace";
 import { Sidebar } from "@/widgets/sidebar";
@@ -14,9 +13,7 @@ export default function HomePage() {
     <AppShell>
       <ResizablePanelGroup direction="horizontal">
         <ResizablePanel defaultSize={10} maxSize={20} minSize={10}>
-          <ScrollArea className="h-full">
-            <Sidebar />
-          </ScrollArea>
+          <Sidebar />
         </ResizablePanel>
 
         <ResizableHandle />

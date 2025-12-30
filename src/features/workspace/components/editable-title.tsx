@@ -19,7 +19,7 @@ export const EditableTitle = () => {
   }, [note?.title]);
 
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex items-center gap-2 w-full">
       <input
         className={cn("focus-visible:ring-0 min-w-[500px] w-full text-2xl", {
           "italic text-primary": isDirty,

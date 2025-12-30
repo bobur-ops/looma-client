@@ -1,7 +1,9 @@
 import type { ApiResponse } from "@/shared/types/http";
 
-export interface GetMeData {
-  user_id: string;
+export interface UserInterface {
+  id: string;
+  email: string;
+  createdAt: string;
 }
 
-export type GetMeApiResponse = ApiResponse<GetMeData>;
+export type GetMeApiResponse = ApiResponse<UserInterface>;

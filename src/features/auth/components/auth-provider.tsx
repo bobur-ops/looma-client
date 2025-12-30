@@ -1,6 +1,10 @@
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import { Navigate, Outlet, useNavigate } from "react-router";
-import { selectIsAuthenticated, setAuthenticated } from "../model/auth-slice";
+import {
+  selectIsAuthenticated,
+  setAuthenticated,
+  setUser,
+} from "../model/auth-slice";
 import { useGetMeQuery } from "../api/queries";
 import { useEffect } from "react";
 
@@ -18,6 +22,12 @@ export default function AuthProvider() {
       navigate("/auth/login");
     }
   }, [isError, dispatch, navigate]);
+
+  useEffect(() => {
+    if (data) {
+      dispatch(setUser(data.data));
+    }
+  }, [data, dispatch]);
 
   if (!isAuthenticated) {
     return <Navigate to={"/auth/login"} />;
