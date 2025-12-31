@@ -81,7 +81,46 @@ export const editorCommands = {
     view.focus();
     return true;
   },
-  heading: (view: EditorView) => {},
+  heading: (view: EditorView) => {
+    const { state } = view;
+    const { from } = state.selection.main;
+
+    const line = state.doc.lineAt(from);
+    const lineText = line.text;
+
+    const match = lineText.match(/^(#{1,6})\s+/);
+
+    let newPrefix = "";
+    const removeFrom = line.from;
+    let removeTo = line.from;
+
+    if (!match) {
+      newPrefix = "# ";
+    } else {
+      const level = match[1].length;
+
+      if (level < 6) {
+        newPrefix = "#".repeat(level + 1) + " ";
+      } else {
+        newPrefix = "";
+      }
+
+      removeTo = line.from + match[0].length;
+    }
+
+    view.dispatch({
+      changes: [
+        ...(match ? [{ from: removeFrom, to: removeTo }] : []),
+        ...(newPrefix ? [{ from: line.from, insert: newPrefix }] : []),
+      ],
+      selection: {
+        anchor: from + (newPrefix.length - (match?.[0].length ?? 0)),
+      },
+    });
+
+    view.focus();
+    return true;
+  },
   code: (view: EditorView) => {},
   codeBlock: (view: EditorView) => {},
   link: (view: EditorView) => {},

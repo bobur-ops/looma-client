@@ -15,7 +15,7 @@ export default function Workspace() {
     }
 
     return (
-      <ScrollArea className="h-full pt-[84px]">
+      <ScrollArea className="h-full pt-[96px]">
         <WorkspaceHeader />
         <WorkspaceEditor />
       </ScrollArea>

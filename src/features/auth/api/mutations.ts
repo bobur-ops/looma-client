@@ -15,13 +15,11 @@ export const useLoginMutation = () => {
     mutationFn: loginApi,
     onSuccess: () => {
       toast.success("Successfully logged in!");
-      const toastId = toast.loading("Redirecting...");
       dispatch(setAuthenticated(true));
       setTimeout(() => {
         navigate("/", {
           replace: true,
         });
-        toast.dismiss(toastId);
       }, 500);
     },
     onError: (error: AxiosError<ApiErrorResponse>) => {

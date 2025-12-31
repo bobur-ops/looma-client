@@ -1,5 +1,6 @@
+import { Button } from "@/components/ui/button";
 import type { EditorCommand } from "../lib/commands";
-import { Bold, Italic } from "lucide-react";
+import { Bold, Heading, Italic } from "lucide-react";
 
 type EditorToolbarProps = {
   onCommand: (command: EditorCommand) => void;
@@ -8,18 +9,27 @@ type EditorToolbarProps = {
 export const EditorToolbar = ({ onCommand }: EditorToolbarProps) => {
   return (
     <div className="flex gap-2 items-center">
-      <button
+      <Button
         onClick={() => onCommand("bold")}
-        className="text-muted-foreground hover:text-primary-foreground cursor-pointer transition-all"
+        size={"icon"}
+        variant={"outline"}
       >
-        <Bold />
-      </button>
-      <button
+        <Bold className="size-5" />
+      </Button>
+      <Button
         onClick={() => onCommand("italic")}
-        className="text-muted-foreground hover:text-primary-foreground cursor-pointer transition-all"
+        size={"icon"}
+        variant={"outline"}
       >
-        <Italic />
-      </button>
+        <Italic className="size-5" />
+      </Button>
+      <Button
+        onClick={() => onCommand("heading")}
+        size={"icon"}
+        variant={"outline"}
+      >
+        <Heading className="size-5" />
+      </Button>
     </div>
   );
 };

@@ -49,7 +49,7 @@
   --font-sans: Inter, sans-serif;
   --font-mono: JetBrains Mono, monospace;
   --font-serif: Playfair Display, serif;
-  --radius: 0.75rem;
+  --radius: 0.5rem;
   --tracking-tighter: calc(var(--tracking-normal) - 0.05em);
   --tracking-tight: calc(var(--tracking-normal) - 0.025em);
   --tracking-wide: calc(var(--tracking-normal) + 0.025em);
@@ -76,7 +76,7 @@
 }
 
 :root {
-  --radius: 0.75rem;
+
   --background: oklch(0.9383 0.0042 236.4993);
   --foreground: oklch(0.3211 0 0);
   --card: oklch(1 0 0);
@@ -169,7 +169,6 @@
   --sidebar-border: oklch(0.3843 0.0301 269.7337);
   --sidebar-ring: oklch(0.6397 0.172 36.4421);
   --destructive-foreground: oklch(1 0 0);
-  --radius: 0.75rem;
   --font-sans: Inter, sans-serif;
   --font-serif: Playfair Display, serif;
   --font-mono: JetBrains Mono, monospace;
