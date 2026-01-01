@@ -64,3 +64,19 @@ export const oneDarkHighlightStyle = HighlightStyle.define([
     fontWeight: "semibold",
   },
 ]);
+
+// highlight (==text==)
+
+// bulletList (- )
+
+// numberedList (1. )
+
+// checkbox (- [ ], - [x])
+
+// blockquote (> )
+
+// horizontalRule (---)
+
+// tableHelper (Markdown tables)
+
+// inlineImage (![alt](url))
